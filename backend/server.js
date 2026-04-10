@@ -41,19 +41,144 @@ app.get('/api/suppliers', async (req, res) => {
   catch (e) { res.status(500).json({ error: e.message }); }
 });
 
+// Add Supplier
+app.post('/api/suppliers', async (req, res) => {
+  try {
+    const { name, location, contact } = req.body;
+    const result = await query('INSERT INTO Supplier (name, location, contact) VALUES (?, ?, ?)', [name, location, contact]);
+    res.json({ id: result.insertId, message: 'Supplier added successfully' });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// Update Supplier
+app.put('/api/suppliers/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, location, contact } = req.body;
+    await query('UPDATE Supplier SET name=?, location=?, contact=? WHERE supplier_id=?', [name, location, contact, id]);
+    res.json({ message: 'Supplier updated successfully' });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// Delete Supplier
+app.delete('/api/suppliers/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    await query('DELETE FROM Supplier WHERE supplier_id=?', [id]);
+    res.json({ message: 'Supplier deleted successfully' });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
 // All Products
 app.get('/api/products', async (req, res) => {
   try { res.json(await query('SELECT * FROM Product')); }
   catch (e) { res.status(500).json({ error: e.message }); }
 });
 
+// Add Product
+app.post('/api/products', async (req, res) => {
+  try {
+    const { name, price, supplier_id } = req.body;
+    const result = await query('INSERT INTO Product (name, price, supplier_id) VALUES (?, ?, ?)', [name, price, supplier_id]);
+    res.json({ id: result.insertId, message: 'Product added successfully' });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// Update Product
+app.put('/api/products/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, price, supplier_id } = req.body;
+    await query('UPDATE Product SET name=?, price=?, supplier_id=? WHERE product_id=?', [name, price, supplier_id, id]);
+    res.json({ message: 'Product updated successfully' });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// Delete Product
+app.delete('/api/products/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    await query('DELETE FROM Product WHERE product_id=?', [id]);
+    res.json({ message: 'Product deleted successfully' });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// All Distributors
+app.get('/api/distributors', async (req, res) => {
+  try { res.json(await query('SELECT * FROM Distributor')); }
+  catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// Add Distributor
+app.post('/api/distributors', async (req, res) => {
+  try {
+    const { name, location, contact } = req.body;
+    const result = await query('INSERT INTO Distributor (name, location, contact) VALUES (?, ?, ?)', [name, location, contact]);
+    res.json({ id: result.insertId, message: 'Distributor added successfully' });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// Update Distributor
+app.put('/api/distributors/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, location, contact } = req.body;
+    await query('UPDATE Distributor SET name=?, location=?, contact=? WHERE distributor_id=?', [name, location, contact, id]);
+    res.json({ message: 'Distributor updated successfully' });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// Delete Distributor
+app.delete('/api/distributors/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    await query('DELETE FROM Distributor WHERE distributor_id=?', [id]);
+    res.json({ message: 'Distributor deleted successfully' });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
 // All Inventory
 app.get('/api/inventory', async (req, res) => {
   try {
     res.json(await query(`
-      SELECT p.name AS product_name, i.quantity, i.warehouse_location
+      SELECT i.product_id, p.name AS product_name, i.quantity, i.warehouse_location
       FROM Product p JOIN Inventory i ON p.product_id = i.product_id
     `));
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// Add/Update Inventory
+app.post('/api/inventory', async (req, res) => {
+  try {
+    const { product_id, quantity, warehouse_location } = req.body;
+    // Check if inventory exists
+    const existing = await query('SELECT * FROM Inventory WHERE product_id=?', [product_id]);
+    if (existing.length > 0) {
+      await query('UPDATE Inventory SET quantity=?, warehouse_location=? WHERE product_id=?', [quantity, warehouse_location, product_id]);
+      res.json({ message: 'Inventory updated successfully' });
+    } else {
+      const result = await query('INSERT INTO Inventory (product_id, quantity, warehouse_location) VALUES (?, ?, ?)', [product_id, quantity, warehouse_location]);
+      res.json({ id: result.insertId, message: 'Inventory added successfully' });
+    }
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// Update Inventory
+app.put('/api/inventory/:product_id', async (req, res) => {
+  try {
+    const { product_id } = req.params;
+    const { quantity, warehouse_location } = req.body;
+    await query('UPDATE Inventory SET quantity=?, warehouse_location=? WHERE product_id=?', [quantity, warehouse_location, product_id]);
+    res.json({ message: 'Inventory updated successfully' });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// Delete Inventory
+app.delete('/api/inventory/:product_id', async (req, res) => {
+  try {
+    const { product_id } = req.params;
+    await query('DELETE FROM Inventory WHERE product_id=?', [product_id]);
+    res.json({ message: 'Inventory deleted successfully' });
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
@@ -70,6 +195,34 @@ app.get('/api/orders', async (req, res) => {
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
+// Add Order
+app.post('/api/orders', async (req, res) => {
+  try {
+    const { product_id, quantity, distributor_id } = req.body;
+    const result = await query('INSERT INTO Orders (product_id, quantity, distributor_id, order_date) VALUES (?, ?, ?, NOW())', [product_id, quantity, distributor_id]);
+    res.json({ id: result.insertId, message: 'Order added successfully' });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// Update Order
+app.put('/api/orders/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { product_id, quantity, distributor_id } = req.body;
+    await query('UPDATE Orders SET product_id=?, quantity=?, distributor_id=? WHERE order_id=?', [product_id, quantity, distributor_id, id]);
+    res.json({ message: 'Order updated successfully' });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// Delete Order
+app.delete('/api/orders/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    await query('DELETE FROM Orders WHERE order_id=?', [id]);
+    res.json({ message: 'Order deleted successfully' });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
 // All Shipments
 app.get('/api/shipments', async (req, res) => {
   try {
@@ -80,6 +233,34 @@ app.get('/api/shipments', async (req, res) => {
       JOIN Orders o ON sh.order_id = o.order_id
       JOIN Product p ON o.product_id = p.product_id
     `));
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// Add Shipment
+app.post('/api/shipments', async (req, res) => {
+  try {
+    const { order_id, transport_cost, delivery_status } = req.body;
+    const result = await query('INSERT INTO Shipment (order_id, transport_cost, delivery_status) VALUES (?, ?, ?)', [order_id, transport_cost, delivery_status || 'Pending']);
+    res.json({ id: result.insertId, message: 'Shipment added successfully' });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// Update Shipment
+app.put('/api/shipments/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { order_id, transport_cost, delivery_status } = req.body;
+    await query('UPDATE Shipment SET order_id=?, transport_cost=?, delivery_status=? WHERE shipment_id=?', [order_id, transport_cost, delivery_status, id]);
+    res.json({ message: 'Shipment updated successfully' });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// Delete Shipment
+app.delete('/api/shipments/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    await query('DELETE FROM Shipment WHERE shipment_id=?', [id]);
+    res.json({ message: 'Shipment deleted successfully' });
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
