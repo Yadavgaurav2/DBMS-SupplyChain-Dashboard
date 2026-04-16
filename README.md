@@ -2,7 +2,15 @@
 
 A RESTful API built with **Node.js**, **Express**, and **MySQL** to manage and analyze supply chain data — including suppliers, products, inventory, orders, and shipments.
 
+## 📊 Dashboard Preview
+
+![Dashboard Overview](screenshots/dashboard-overview.png)
+![Inventory Analytics](screenshots/inventory-graph.png)
+![Order Trends](screenshots/order-trends.png)
+
 ---
+
+## 🚀 Tech Stack
 
 ## 🚀 Tech Stack
 
