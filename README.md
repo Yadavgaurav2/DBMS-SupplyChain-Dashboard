@@ -1,5 +1,7 @@
 # 🏭 Supply Chain Management API
 
+[![GitHub](https://img.shields.io/badge/GitHub-View%20on%20GitHub-blue)](https://github.com/Yadavgaurav2/DBMS-SupplyChain-Dashboard)
+
 A RESTful API built with **Node.js**, **Express**, and **MySQL** to manage and analyze supply chain data — including suppliers, products, inventory, orders, and shipments.
 
 ## 📊 Dashboard Preview
