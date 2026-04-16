@@ -4,15 +4,28 @@
 
 A RESTful API built with **Node.js**, **Express**, and **MySQL** to manage and analyze supply chain data — including suppliers, products, inventory, orders, and shipments.
 
-## 📊 Dashboard Preview
+## � Repository
+
+- GitHub: https://github.com/Yadavgaurav2/DBMS-SupplyChain-Dashboard
+- Clone: `git clone https://github.com/Yadavgaurav2/DBMS-SupplyChain-Dashboard.git`
+
+## 🚚 Supply Chain Overview
+
+This project models a supply chain system that includes:
+
+- Suppliers and vendors
+- Product and inventory management
+- Order processing and tracking
+- Shipment coordination and delivery status
+- Distributor relationships and analytics
+
+## �📊 Dashboard Preview
 
 ![Dashboard Overview](screenshots/dashboard-overview.png)
 ![Inventory Analytics](screenshots/inventory-graph.png)
 ![Order Trends](screenshots/order-trends.png)
 
 ---
-
-## 🚀 Tech Stack
 
 ## 🚀 Tech Stack
 
@@ -28,8 +41,8 @@ A RESTful API built with **Node.js**, **Express**, and **MySQL** to manage and a
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-username/supply-chain-api.git
-cd supply-chain-api
+git clone https://github.com/Yadavgaurav2/DBMS-SupplyChain-Dashboard.git
+cd DBMS-SupplyChain-Dashboard
 ```
 
 ### 2. Install dependencies
