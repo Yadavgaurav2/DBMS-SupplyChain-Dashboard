@@ -18,7 +18,12 @@ This project models a supply chain system that includes:
 - Order processing and tracking
 - Shipment coordination and delivery status
 - Distributor relationships and analytics
+## 📌 Project Status
 
+- ✅ Repository created and pushed to GitHub
+- ✅ Dashboard preview images added
+- ✅ Backend API and frontend running locally
+- 🚧 Next: add more analytics, improve UI, and deploy
 ## �📊 Dashboard Preview
 
 ![Dashboard Overview](screenshots/dashboard-overview.png)
